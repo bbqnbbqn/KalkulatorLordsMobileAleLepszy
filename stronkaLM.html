@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Speedów i Jednostek</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+  <div id="root" class="container mx-auto p-4 max-w-4xl">
+    <h1 id="main-title" class="text-2xl font-bold mb-4 text-center">Kalkulator Speedów i Jednostek</h1>
+    <div id="app"></div>
+  </div>
+
+  <script>
+    const SPEED_TIMES = {
+      '3d': 3 * 24 * 60,
+      '1d': 24 * 60,
+      '15h': 15 * 60,
+      '8h': 8 * 60,
+      '3h': 3 * 60,
+      '1h': 60,
+      '30min': 30,
+      '15min': 15,
+      '10min': 10
+    };
+
+    const UNIT_REQUIREMENTS_DEFAULT = {
+      'Piechota2': 1000000, 'Łuki2': 1000000, 'Kawaleria2': 1000000,
+      'Piechota4': 500000, 'Łuki4': 500000, 'Kawaleria4': 500000
+    };
+
+    const DEFAULT_IMAGES = {
+      '3d': 'https://via.placeholder.com/30?text=3d',
+      '1d': 'https://via.placeholder.com/30?text=1d',
+      '15h': 'https://via.placeholder.com/30?text=15h',
+      '8h': 'https://via.placeholder.com/30?text=8h',
+      '3h': 'https://via.placeholder.com/30?text=3h',
+      '1h': 'https://via.placeholder.com/30?text=1h',
+      '30min': 'https://via.placeholder.com/30?text=30m',
+      '15min': 'https://via.placeholder.com/30?text=15m',
+      '10min': 'https://via.placeholder.com/30?text=10m',
+      'Piechota2': 'https://via.placeholder.com/30?text=PiechT2',
+      'Łuki2': 'https://via.placeholder.com/30?text=ŁukiT2',
+      'Kawaleria2': 'https://via.placeholder.com/30?text=KawT2',
+      'Piechota4': 'https://via.placeholder.com/30?text=PiechT4',
+      'Łuki4': 'https://via.placeholder.com/30?text=ŁukiT4',
+      'Kawaleria4': 'https://via.placeholder.com/30?text=KawT4'
+    };
+
+    const TRANSLATIONS = {
+      pl: {
+        mainTitle: 'Kalkulator Speedów i Jednostek',
+        configTitle: 'Konfiguracja kont',
+        accountCount: 'Liczba kont:',
+        uploadFile: 'Wczytaj poprzedni plik wyników (opcjonalne):',
+        uploadError: 'Błąd podczas parsowania pliku. Upewnij się, że plik ma prawidłowy format.',
+        accountName: 'Nazwa konta {count}:',
+        targetUnits: 'Docelowa liczba jednostek',
+        addAccount: 'Dodaj konto',
+        fileSaving: 'Zapis wyników',
+        singleFile: 'Jeden plik',
+        multipleFiles: 'Osobne pliki dla każdego konta',
+        fileName: 'Nazwa pliku (opcjonalnie):',
+        filePlaceholder: 'np. wyniki',
+        next: 'Dalej',
+        speedsTitle: 'Przyspieszenia zwykłe',
+        speedLabel: 'Ile speedów {speed}?',
+        gemsLabel: 'Ilość gemów:',
+        back: 'Wstecz',
+        trainSpeedsTitle: 'Przyspieszenia treningu',
+        unitsTitle: 'Aktualna liczba jednostek',
+        unitInput: 'Podaj liczbę {unit}',
+        trainingTitle: 'Szkolenia',
+        barracksLabel: 'Pojemność koszar:',
+        unitSpeedsTitle: 'Przyspieszenia na jednostki',
+        boostLabel: 'Procent przyspieszenia (np. 300, 300.00):',
+        previewResults: 'Podgląd wyników',
+        previewTitle: 'Podgląd wyników',
+        downloadResults: 'Pobierz wyniki',
+        output: {
+          accountHeader: '===== Konto {id}: {name} =====',
+          normalSpeeds: 'Przyspieszenia zwykłe',
+          days: 'Ilość dni wynosi: {days}',
+          hours: 'Ilość godzin wynosi: {hours}',
+          minutes: 'Ilość minut wynosi: {mins}',
+          gems: 'Ilość gemów wynosi: {gems}',
+          gems15h: 'Można za to kupić: {count} speedów 15h',
+          gems24h: 'Można za to kupić: {count} speedów 24h',
+          trainSpeeds: 'Przyspieszenia treningu',
+          missingUnits: 'Brakująca liczba {unit}: {count}',
+          timestamp: 'Stan na: {date}',
+          trainings: 'Potrzebna liczba szkoleń {unit}: {count}',
+          unitSpeeds: 'Wymagane przyspieszenia na brakujące {unit}:',
+          t2Speeds: 'Wymagane przyspieszenia na brakujące T2:',
+          t4Speeds: 'Wymagane przyspieszenia na brakujące T4:',
+          totalSpeeds: 'Wymagane przyspieszenia na całe brakujące wojsko:',
+          comparisonHeader: 'Porównanie z poprzednim zapisem ({date}):',
+          comparisonDiff: 'Zmiana dla {unit}:\nRóżnica: {diff} jednostek\nProcentowo względem docelowej liczby: {percent}%\nŚrednia dzienna zmiana: {daily} jednostek/dzień',
+          comparisonNoDate: 'Brak daty w poprzednim pliku.',
+          separator: '-'.repeat(60),
+          trainingSeparator: '*'.repeat(60),
+          accountSeparator: '='.repeat(60)
+        },
+        units: {
+          'Piechota2': 'piechoty T2',
+          'Piechota4': 'piechoty T4',
+          'Łuki2': 'łuczników T2',
+          'Łuki4': 'łuczników T4',
+          'Kawaleria2': 'kawalerii T2',
+          'Kawaleria4': 'kawalerii T4'
+        },
+        locale: 'pl-PL'
+      },
+      en: {
+        mainTitle: 'Speeds and Units Calculator',
+        configTitle: 'Account Configuration',
+        accountCount: 'Number of accounts:',
+        uploadFile: 'Upload previous results file (optional):',
+        uploadError: 'Error parsing file. Ensure the file is in the correct format.',
+        accountName: 'Account {count} name:',
+        targetUnits: 'Target number of units',
+        addAccount: 'Add account',
+        fileSaving: 'Results saving',
+        singleFile: 'Single file',
+        multipleFiles: 'Separate files for each account',
+        fileName: 'File name (optional):',
+        filePlaceholder: 'e.g., results',
+        next: 'Next',
+        speedsTitle: 'Normal Speeds',
+        speedLabel: 'How many {speed} speeds?',
+        gemsLabel: 'Number of gems:',
+        back: 'Back',
+        trainSpeedsTitle: 'Training Speeds',
+        unitsTitle: 'Current number of units',
+        unitInput: 'Enter number of {unit}',
+        trainingTitle: 'Trainings',
+        barracksLabel: 'Barracks capacity:',
+        unitSpeedsTitle: 'Speeds for Units',
+        boostLabel: 'Acceleration percentage (e.g., 300, 300.00):',
+        previewResults: 'Preview Results',
+        previewTitle: 'Results Preview',
+        downloadResults: 'Download Results',
+        output: {
+          accountHeader: '===== Account {id}: {name} =====',
+          normalSpeeds: 'Normal Speeds',
+          days: 'Number of days: {days}',
+          hours: 'Number of hours: {hours}',
+          minutes: 'Number of minutes: {mins}',
+          gems: 'Number of gems: {gems}',
+          gems15h: 'Can buy: {count} 15h speeds',
+          gems24h: 'Can buy: {count} 24h speeds',
+          trainSpeeds: 'Training Speeds',
+          missingUnits: 'Missing number of {unit}: {count}',
+          timestamp: 'As of: {date}',
+          trainings: 'Required number of trainings for {unit}: {count}',
+          unitSpeeds: 'Required speeds for missing {unit}:',
+          t2Speeds: 'Required speeds for missing T2:',
+          t4Speeds: 'Required speeds for missing T4:',
+          totalSpeeds: 'Required speeds for all missing troops:',
+          comparisonHeader: 'Comparison with previous record ({date}):',
+          comparisonDiff: 'Change for {unit}:\nDifference: {diff} units\nPercentage relative to target: {percent}%\nAverage daily change: {daily} units/day',
+          comparisonNoDate: 'No date in previous file.',
+          separator: '-'.repeat(60),
+          trainingSeparator: '*'.repeat(60),
+          accountSeparator: '='.repeat(60)
+        },
+        units: {
+          'Piechota2': 'infantry T2',
+          'Piechota4': 'infantry T4',
+          'Łuki2': 'archers T2',
+          'Łuki4': 'archers T4',
+          'Kawaleria2': 'cavalry T2',
+          'Kawaleria4': 'cavalry T4'
+        },
+        locale: 'en-US'
+      },
+      es: {
+        mainTitle: 'Calculadora de Velocidades y Unidades',
+        configTitle: 'Configuración de cuentas',
+        accountCount: 'Número de cuentas:',
+        uploadFile: 'Cargar archivo de resultados anteriores (opcional):',
+        uploadError: 'Error al analizar el archivo. Asegúrate de que el archivo esté en el formato correcto.',
+        accountName: 'Nombre de la cuenta {count}:',
+        targetUnits: 'Número objetivo de unidades',
+        addAccount: 'Añadir cuenta',
+        fileSaving: 'Guardado de resultados',
+        singleFile: 'Un solo archivo',
+        multipleFiles: 'Archivos separados para cada cuenta',
+        fileName: 'Nombre del archivo (opcional):',
+        filePlaceholder: 'ej., resultados',
+        next: 'Siguiente',
+        speedsTitle: 'Velocidades normales',
+        speedLabel: '¿Cuántas velocidades de {speed}?',
+        gemsLabel: 'Número de gemas:',
+        back: 'Atrás',
+        trainSpeedsTitle: 'Velocidades de entrenamiento',
+        unitsTitle: 'Número actual de unidades',
+        unitInput: 'Ingresa el número de {unit}',
+        trainingTitle: 'Entrenamientos',
+        barracksLabel: 'Capacidad de los cuarteles:',
+        unitSpeedsTitle: 'Velocidades para unidades',
+        boostLabel: 'Porcentaje de aceleración (ej., 300, 300.00):',
+        previewResults: 'Vista previa de resultados',
+        previewTitle: 'Vista previa de resultados',
+        downloadResults: 'Descargar resultados',
+        output: {
+          accountHeader: '===== Cuenta {id}: {name} =====',
+          normalSpeeds: 'Velocidades normales',
+          days: 'Número de días: {days}',
+          hours: 'Número de horas: {hours}',
+          minutes: 'Número de minutos: {mins}',
+          gems: 'Número de gemas: {gems}',
+          gems15h: 'Se pueden comprar: {count} velocidades de 15h',
+          gems24h: 'Se pueden comprar: {count} velocidades de 24h',
+          trainSpeeds: 'Velocidades de entrenamiento',
+          missingUnits: 'Número faltante de {unit}: {count}',
+          timestamp: 'A fecha de: {date}',
+          trainings: 'Número requerido de entrenamientos para {unit}: {count}',
+          unitSpeeds: 'Velocidades requeridas para las {unit} faltantes:',
+          t2Speeds: 'Velocidades requeridas para las T2 faltantes:',
+          t4Speeds: 'Velocidades requeridas para las T4 faltantes:',
+          totalSpeeds: 'Velocidades requeridas para todas las tropas faltantes:',
+          comparisonHeader: 'Comparación con el registro anterior ({date}):',
+          comparisonDiff: 'Cambio para {unit}:\nDiferencia: {diff} unidades\nPorcentaje respecto al objetivo: {percent}%\nCambio diario promedio: {daily} unidades/día',
+          comparisonNoDate: 'Sin fecha en el archivo anterior.',
+          separator: '-'.repeat(60),
+          trainingSeparator: '*'.repeat(60),
+          accountSeparator: '='.repeat(60)
+        },
+        units: {
+          'Piechota2': 'infantería T2',
+          'Piechota4': 'infantería T4',
+          'Łuki2': 'arqueros T2',
+          'Łuki4': 'arqueros T4',
+          'Kawaleria2': 'caballería T2',
+          'Kawaleria4': 'caballería T4'
+        },
+        locale: 'es-ES'
+      },
+      de: {
+        mainTitle: 'Rechner für Geschwindigkeiten und Einheiten',
+        configTitle: 'Kontokonfiguration',
+        accountCount: 'Anzahl der Konten:',
+        uploadFile: 'Vorherige Ergebnisdatei hochladen (optional):',
+        uploadError: 'Fehler beim Parsen der Datei. Stellen Sie sicher, dass die Datei das richtige Format hat.',
+        accountName: 'Kontoname {count}:',
+        targetUnits: 'Zielanzahl an Einheiten',
+        addAccount: 'Konto hinzufügen',
+        fileSaving: 'Speichern der Ergebnisse',
+        singleFile: 'Einzelne Datei',
+        multipleFiles: 'Separate Dateien für jedes Konto',
+        fileName: 'Dateiname (optional):',
+        filePlaceholder: 'z.B. Ergebnisse',
+        next: 'Weiter',
+        speedsTitle: 'Normale Geschwindigkeiten',
+        speedLabel: 'Wie viele {speed}-Geschwindigkeiten?',
+        gemsLabel: 'Anzahl der Edelsteine:',
+        back: 'Zurück',
+        trainSpeedsTitle: 'Trainingsgeschwindigkeiten',
+        unitsTitle: 'Aktuelle Anzahl an Einheiten',
+        unitInput: 'Anzahl der {unit} eingeben',
+        trainingTitle: 'Trainings',
+        barracksLabel: 'Kapazität der Kasernen:',
+        unitSpeedsTitle: 'Geschwindigkeiten für Einheiten',
+        boostLabel: 'Beschleunigungsprozentsatz (z.B. 300, 300.00):',
+        previewResults: 'Ergebnisse anzeigen',
+        previewTitle: 'Ergebnisvorschau',
+        downloadResults: 'Ergebnisse herunterladen',
+        output: {
+          accountHeader: '===== Konto {id}: {name} =====',
+          normalSpeeds: 'Normale Geschwindigkeiten',
+          days: 'Anzahl der Tage: {days}',
+          hours: 'Anzahl der Stunden: {hours}',
+          minutes: 'Anzahl der Minuten: {mins}',
+          gems: 'Anzahl der Edelsteine: {gems}',
+          gems15h: 'Kann kaufen: {count} 15h-Geschwindigkeiten',
+          gems24h: 'Kann kaufen: {count} 24h-Geschwindigkeiten',
+          trainSpeeds: 'Trainingsgeschwindigkeiten',
+          missingUnits: 'Fehlende Anzahl an {unit}: {count}',
+          timestamp: 'Stand: {date}',
+          trainings: 'Benötigte Anzahl an Trainings für {unit}: {count}',
+          unitSpeeds: 'Benötigte Geschwindigkeiten für fehlende {unit}:',
+          t2Speeds: 'Benötigte Geschwindigkeiten für fehlende T2:',
+          t4Speeds: 'Benötigte Geschwindigkeiten für fehlende T4:',
+          totalSpeeds: 'Benötigte Geschwindigkeiten für alle fehlenden Truppen:',
+          comparisonHeader: 'Vergleich mit vorherigem Datensatz ({date}):',
+          comparisonDiff: 'Änderung für {unit}:\nDifferenz: {diff} Einheiten\nProzentsatz relativ zum Ziel: {percent}%\nDurchschnittliche tägliche Änderung: {daily} Einheiten/Tag',
+          comparisonNoDate: 'Kein Datum in der vorherigen Datei.',
+          separator: '-'.repeat(60),
+          trainingSeparator: '*'.repeat(60),
+          accountSeparator: '='.repeat(60)
+        },
+        units: {
+          'Piechota2': 'Infanterie T2',
+          'Piechota4': 'Infanterie T4',
+          'Łuki2': 'Bogenschützen T2',
+          'Łuki4': 'Bogenschützen T4',
+          'Kawaleria2': 'Kavallerie T2',
+          'Kawaleria4': 'Kavallerie T4'
+        },
+        locale: 'de-DE'
+      },
+      fr: {
+        mainTitle: 'Calculateur de Vitesse et d’Unités',
+        configTitle: 'Configuration des comptes',
+        accountCount: 'Nombre de comptes :',
+        uploadFile: 'Télécharger le fichier de résultats précédent (facultatif) :',
+        uploadError: 'Erreur lors de l’analyse du fichier. Assurez-vous que le fichier est au bon format.',
+        accountName: 'Nom du compte {count} :',
+        targetUnits: 'Nombre cible d’unités',
+        addAccount: 'Ajouter un compte',
+        fileSaving: 'Enregistrement des résultats',
+        singleFile: 'Fichier unique',
+        multipleFiles: 'Fichiers séparés pour chaque compte',
+        fileName: 'Nom du fichier (facultatif) :',
+        filePlaceholder: 'ex. résultats',
+        next: 'Suivant',
+        speedsTitle: 'Vitesses normales',
+        speedLabel: 'Combien de vitesses {speed} ?',
+        gemsLabel: 'Nombre de gemmes :',
+        back: 'Retour',
+        trainSpeedsTitle: 'Vitesses d’entraînement',
+        unitsTitle: 'Nombre actuel d’unités',
+        unitInput: 'Entrez le nombre de {unit}',
+        trainingTitle: 'Entraînements',
+        barracksLabel: 'Capacité des casernes :',
+        unitSpeedsTitle: 'Vitesses pour les unités',
+        boostLabel: 'Pourcentage d’accélération (ex. 300, 300.00) :',
+        previewResults: 'Aperçu des résultats',
+        previewTitle: 'Aperçu des résultats',
+        downloadResults: 'Télécharger les résultats',
+        output: {
+          accountHeader: '===== Compte {id} : {name} =====',
+          normalSpeeds: 'Vitesses normales',
+          days: 'Nombre de jours : {days}',
+          hours: 'Nombre d’heures : {hours}',
+          minutes: 'Nombre de minutes : {mins}',
+          gems: 'Nombre de gemmes : {gems}',
+          gems15h: 'Peut acheter : {count} vitesses 15h',
+          gems24h: 'Peut acheter : {count} vitesses 24h',
+          trainSpeeds: 'Vitesses d’entraînement',
+          missingUnits: 'Nombre manquant de {unit} : {count}',
+          timestamp: 'Au : {date}',
+          trainings: 'Nombre requis d’entraînements pour {unit} : {count}',
+          unitSpeeds: 'Vitesses requises pour les {unit} manquantes :',
+          t2Speeds: 'Vitesses requises pour les T2 manquantes :',
+          t4Speeds: 'Vitesses requises pour les T4 manquantes :',
+          totalSpeeds: 'Vitesses requises pour toutes les troupes manquantes :',
+          comparisonHeader: 'Comparaison avec l’enregistrement précédent ({date}) :',
+          comparisonDiff: 'Changement pour {unit} :\nDifférence : {diff} unités\nPourcentage par rapport à l’objectif : {percent}%\nChangement quotidien moyen : {daily} unités/jour',
+          comparisonNoDate: 'Aucune date dans le fichier précédent.',
+          separator: '-'.repeat(60),
+          trainingSeparator: '*'.repeat(60),
+          accountSeparator: '='.repeat(60)
+        },
+        units: {
+          'Piechota2': 'infanterie T2',
+          'Piechota4': 'infanterie T4',
+          'Łuki2': 'archers T2',
+          'Łuki4': 'archers T4',
+          'Kawaleria2': 'cavalerie T2',
+          'Kawaleria4': 'cavalerie T4'
+        },
+        locale: 'fr-FR'
+      }
+    };
+
+    let state = {
+      accounts: [{ id: 1, name: 'Konto 1', requirements: { ...UNIT_REQUIREMENTS_DEFAULT } }],
+      currentStep: 'config',
+      speeds: {},
+      trainSpeeds: {},
+      gems: {},
+      units: {},
+      barracks: 0,
+      boost: '',
+      fileOption: 'single',
+      filePath: '',
+      results: [],
+      previousData: null,
+      uploadError: '',
+      language: 'pl'
+    };
+
+    function timeToDHM(minutes) {
+      const days = Math.floor(minutes / 1440);
+      const hours = Math.floor((minutes / 1440 - days) * 24);
+      const mins = Math.floor(((minutes / 1440 - days) * 24 - hours) * 60);
+      return { days, hours, mins };
+    }
+
+    function parseBoost(value) {
+      const normalized = value.replace(',', '.');
+      return isNaN(parseFloat(normalized)) ? 0 : parseFloat(normalized) / 100;
+    }
+
+    function handleFileUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const content = event.target.result;
+            const accountsData = {};
+            let currentAccount = null;
+            let date = null;
+            content.split('\n').forEach(line => {
+              if (line.match(/===== (Konto|Account|Cuenta|Konto|Compte) \d+: .+ =====/)) {
+                const match = line.match(/===== (?:Konto|Account|Cuenta|Konto|Compte) \d+: (.+) =====/);
+                if (match) {
+                  currentAccount = match[1];
+                  accountsData[currentAccount] = { units: {}, date: null };
+                }
+              } else if (line.match(/Stan na|As of|A fecha de|Stand|Au/)) {
+                const dateStr = line.replace(/Stan na|As of|A fecha de|Stand|Au/, '').trim().replace(/,/, '.');
+                date = new Date(dateStr);
+                if (currentAccount && date) {
+                  accountsData[currentAccount].date = date;
+                }
+              } else if (line.match(/(Brakująca liczba|Missing number|Número faltante|Fehlende Anzahl|Nombre manquant)/)) {
+                const match = line.match(/(?:Brakująca liczba|Missing number|Número faltante|Fehlende Anzahl|Nombre manquant) (.+): (\d+)/);
+                if (match && currentAccount) {
+                  let unit = match[1];
+                  unit = unit.replace(/piechoty|infantry|infantería|Infanterie|infanterie/, 'Piechota')
+                    .replace(/łuczników|archers|arqueros|B.genschützen|archers/i, 'Łuki')
+                    .replace(/kawalerii|cavalry|caballería|Kavallerie|cavalerie/, 'Kawaleria')
+                    .replace(' T2', '2').replace(' T4', '4');
+                  accountsData[currentAccount].units[unit] = parseInt(match[2]);
+                }
+              }
+            });
+            state.previousData = accountsData;
+            state.uploadError = '';
+          } catch (err) {
+            state.uploadError = TRANSLATIONS[state.language].uploadError;
+          }
+          render();
+        };
+        reader.readAsText(file);
+      }
+    }
+
+    function calculateSpeeds(speedsData) {
+      const totalMinutes = Object.keys(speedsData).reduce(
+        (sum, key) => sum + (speedsData[key] || 0) * SPEED_TIMES[key], 0
+      );
+      return timeToDHM(totalMinutes);
+    }
+
+    function calculateTrainings(unitsData, barracks) {
+      return Object.keys(unitsData).reduce((acc, unit) => ({
+        ...acc,
+        [unit]: Math.round(unitsData[unit] / barracks)
+      }), {});
+    }
+
+    function calculateUnitSpeeds(unitsData, boostValue) {
+      const results = { t2: 0, t4: 0 };
+      const content = [];
+      Object.keys(unitsData).forEach(unit => {
+        const baseTime = unit.endsWith('2') ? 30 : 120;
+        const adjustedTime = baseTime / (1 + boostValue);
+        const totalSeconds = adjustedTime * unitsData[unit];
+        const days = Math.round(totalSeconds / 86400);
+        if (unit.endsWith('2')) results.t2 += days;
+        else results.t4 += days;
+        const { days: d, hours: h, mins: m } = timeToDHM(days * 1440);
+        const unitName = TRANSLATIONS[state.language].units[unit];
+        content.push(`${TRANSLATIONS[state.language].output.unitSpeeds.replace('{unit}', unitName)}\n\n` +
+                    `${TRANSLATIONS[state.language].output.days.replace('{days}', d)}\n` +
+                    `${TRANSLATIONS[state.language].output.hours.replace('{hours}', h)}\n` +
+                    `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', m)}\n${TRANSLATIONS[state.language].output.separator}\n`);
+      });
+      return { results, content };
+    }
+
+    function generateComparison(account, currentUnits, previousData) {
+      if (!previousData || !previousData[account.name]) return '';
+      const prevUnits = previousData[account.name].units;
+      const prevDate = previousData[account.name].date;
+      if (!prevDate) return TRANSLATIONS[state.language].output.comparisonNoDate + '\n';
+      
+      const currentDate = new Date();
+      const daysDiff = Math.max((currentDate - prevDate) / (1000 * 60 * 60 * 24), 1);
+      let comparison = `${TRANSLATIONS[state.language].output.comparisonHeader.replace('{date}', prevDate.toLocaleString(TRANSLATIONS[state.language].locale, { timeZone: 'Europe/Warsaw' }))}\n\n`;
+      
+      Object.keys(UNIT_REQUIREMENTS_DEFAULT).forEach(unit => {
+        const currentMissing = currentUnits[unit] || 0;
+        const prevMissing = prevUnits[unit] || 0;
+        const diff = prevMissing - currentMissing;
+        const target = account.requirements[unit];
+        const percentChange = target ? (diff / target * 100).toFixed(2) : 0;
+        const dailyChange = (diff / daysDiff).toFixed(2);
+        const unitName = TRANSLATIONS[state.language].units[unit];
+        comparison += TRANSLATIONS[state.language].output.comparisonDiff
+          .replace('{unit}', unitName)
+          .replace('{diff}', `${diff >= 0 ? '+' : ''}${diff}`)
+          .replace('{percent}', `${percentChange >= 0 ? '+' : ''}${percentChange}`)
+          .replace('{daily}', `${dailyChange >= 0 ? '+' : ''}${dailyChange}`) +
+          `\n${TRANSLATIONS[state.language].output.separator}\n`;
+      });
+      return comparison + '\n';
+    }
+
+    function generateOutput() {
+      const outputs = state.accounts.map(account => {
+        const speedResult = calculateSpeeds(state.speeds[account.id] || {});
+        const trainSpeedResult = calculateSpeeds(state.trainSpeeds[account.id] || {});
+        const gems_15h = Math.floor((state.gems[account.id] || 0) / 3000);
+        const gems_24h = Math.floor((state.gems[account.id] || 0) / 4500);
+        const unitData = state.units[account.id] || {};
+        const trainingData = state.barracks ? calculateTrainings(unitData, state.barracks) : {};
+        const unitSpeedData = state.boost ? calculateUnitSpeeds(unitData, parseBoost(state.boost)) : { results: { t2: 0, t4: 0 }, content: [] };
+        const comparison = generateComparison(account, unitData, state.previousData);
+
+        return (
+          `${TRANSLATIONS[state.language].output.accountHeader.replace('{id}', account.id).replace('{name}', account.name)}\n\n` +
+          `${TRANSLATIONS[state.language].output.normalSpeeds}\n\n` +
+          `${TRANSLATIONS[state.language].output.days.replace('{days}', speedResult.days)}\n` +
+          `${TRANSLATIONS[state.language].output.hours.replace('{hours}', speedResult.hours)}\n` +
+          `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', speedResult.mins)}\n` +
+          `${TRANSLATIONS[state.language].output.gems.replace('{gems}', state.gems[account.id] || 0)}\n` +
+          `${TRANSLATIONS[state.language].output.gems15h.replace('{count}', gems_15h)}\n` +
+          `${TRANSLATIONS[state.language].output.gems24h.replace('{count}', gems_24h)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+          `${TRANSLATIONS[state.language].output.trainSpeeds}\n\n` +
+          `${TRANSLATIONS[state.language].output.days.replace('{days}', trainSpeedResult.days)}\n` +
+          `${TRANSLATIONS[state.language].output.hours.replace('{hours}', trainSpeedResult.hours)}\n` +
+          `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', trainSpeedResult.mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+          Object.keys(unitData).map(unit => 
+            `${TRANSLATIONS[state.language].output.missingUnits.replace('{unit}', TRANSLATIONS[state.language].units[unit]).replace('{count}', unitData[unit])}\n`
+          ).join('') +
+          `\n${TRANSLATIONS[state.language].output.timestamp.replace('{date}', new Date().toLocaleString(TRANSLATIONS[state.language].locale, { timeZone: 'Europe/Warsaw' }))}\n${TRANSLATIONS[state.language].output.separator}\n` +
+          (state.barracks ? Object.keys(trainingData).map(unit => 
+            `${TRANSLATIONS[state.language].output.trainings.replace('{unit}', TRANSLATIONS[state.language].units[unit]).replace('{count}', trainingData[unit])}\n`
+          ).join('') + `\n${TRANSLATIONS[state.language].output.trainingSeparator}\n` : '') +
+          (state.boost ? unitSpeedData.content.join('') +
+            `${TRANSLATIONS[state.language].output.t2Speeds}\n\n` +
+            `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM(unitSpeedData.results.t2 * 1440).days)}\n` +
+            `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM(unitSpeedData.results.t2 * 1440).hours)}\n` +
+            `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', timeToDHM(unitSpeedData.results.t2 * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+            `${TRANSLATIONS[state.language].output.t4Speeds}\n\n` +
+            `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM(unitSpeedData.results.t4 * 1440).days)}\n` +
+            `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM(unitSpeedData.results.t4 * 1440).hours)}\n` +
+            `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', timeToDHM(unitSpeedData.results.t4 * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+            `${TRANSLATIONS[state.language].output.totalSpeeds}\n\n` +
+            `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM((unitSpeedData.results.t2 + unitSpeedData.results.t4) * 1440).days)}\n` +
+            `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM((unitSpeedData.results.t2 + unitSpeedData.results.t4) * 1440).hours)}\n` +
+            `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', timeToDHM((unitSpeedData.results.t2 + unitSpeedData.results.t4) * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` : '') +
+          comparison +
+          `\n${TRANSLATIONS[state.language].output.accountSeparator}\n\n`
+        );
+      });
+      state.results = outputs;
+      state.currentStep = 'preview';
+      render();
+    }
+
+    function downloadResults() {
+      if (state.fileOption === 'single') {
+        const blob = new Blob([state.results.join('\n')], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = state.filePath || 'wyniki.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        state.results.forEach((output, index) => {
+          const blob = new Blob([output], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = state.filePath ? `${state.filePath}_${state.accounts[index].name}.txt` : `wyniki_${state.accounts[index].name}.txt`;
+          a.click();
+          URL.revokeObjectURL(url);
+        });
+      }
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      const t = TRANSLATIONS[state.language];
+      app.innerHTML = '';
+      document.getElementById('main-title').textContent = t.mainTitle;
+
+      if (state.currentStep === 'config') {
+        app.innerHTML = `
+          <div class="mb-6">
+            <div class="mb-4">
+              <label class="block text-sm font-medium">${t.accountCount}</label>
+              <input type="number" min="1" max="10" value="${state.accounts.length}" id="accountCount" class="w-full p-2 border rounded-md">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium">Język:</label>
+              <select id="languageSelect" class="w-full p-2 border rounded-md">
+                <option value="pl" ${state.language === 'pl' ? 'selected' : ''}>Polski</option>
+                <option value="en" ${state.language === 'en' ? 'selected' : ''}>English</option>
+                <option value="es" ${state.language === 'es' ? 'selected' : ''}>Español</option>
+                <option value="de" ${state.language === 'de' ? 'selected' : ''}>Deutsch</option>
+                <option value="fr" ${state.language === 'fr' ? 'selected' : ''}>Français</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium">${t.uploadFile}</label>
+              <input type="file" accept="text/plain" id="uploadFile" class="w-full p-2 border rounded-md">
+              ${state.uploadError ? `<p class="text-red-500 text-sm mt-2">${state.uploadError}</p>` : ''}
+            </div>
+            ${state.accounts.map(account => `
+              <div class="mb-4 p-4 border rounded-md">
+                <label class="block text-sm font-medium">${t.accountName.replace('{count}', account.id)}</label>
+                <input type="text" value="${account.name}" id="accountName${account.id}" class="w-full p-2 border rounded-md mb-2">
+                <h3 class="text-lg font-semibold">${t.targetUnits}</h3>
+                ${Object.keys(UNIT_REQUIREMENTS_DEFAULT).map(unit => `
+                  <div class="flex items-center mb-2">
+                    <img src="${DEFAULT_IMAGES[unit]}" alt="${unit}" class="w-8 h-8 mr-2 rounded">
+                    <label class="text-sm font-medium mr-2">${t.units[unit]}:</label>
+                    <input type="number" value="${account.requirements[unit]}" id="unit${account.id}_${unit}" min="0" class="w-24 p-2 border rounded-md">
+                  </div>
+                `).join('')}
+              </div>
+            `).join('')}
+            <button id="addAccount" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.addAccount}</button>
+            <div class="mt-4">
+              <label class="block text-sm font-medium">${t.fileSaving}</label>
+              <select id="fileOption" class="w-full p-2 border rounded-md mb-2">
+                <option value="single" ${state.fileOption === 'single' ? 'selected' : ''}>${t.singleFile}</option>
+                <option value="multiple" ${state.fileOption === 'multiple' ? 'selected' : ''}>${t.multipleFiles}</option>
+              </select>
+              <label class="block text-sm font-medium">${t.fileName}</label>
+              <input type="text" value="${state.filePath}" id="filePath" placeholder="${t.filePlaceholder}" class="w-full p-2 border rounded-md">
+            </div>
+            <button id="nextConfig" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
+          </div>
+        `;
+        document.getElementById('accountCount').addEventListener('change', (e) => {
+          const count = parseInt(e.target.value) || 1;
+          state.accounts = Array.from({ length: Math.min(count, 10) }, (_, i) => (
+            state.accounts[i] || { id: i + 1, name: `Konto ${i + 1}`, requirements: { ...UNIT_REQUIREMENTS_DEFAULT } }
+          ));
+          render();
+        });
+        document.getElementById('languageSelect').addEventListener('change', (e) => {
+          state.language = e.target.value;
+          render();
+        });
+        document.getElementById('uploadFile').addEventListener('change', handleFileUpload);
+        state.accounts.forEach(account => {
+          document.getElementById(`accountName${account.id}`).addEventListener('change', (e) => {
+            state.accounts = state.accounts.map(acc => acc.id === account.id ? { ...acc, name: e.target.value } : acc);
+            render();
+          });
+          Object.keys(UNIT_REQUIREMENTS_DEFAULT).forEach(unit => {
+            document.getElementById(`unit${account.id}_${unit}`).addEventListener('change', (e) => {
+              state.accounts = state.accounts.map(acc => acc.id === account.id ? {
+                ...acc,
+                requirements: { ...acc.requirements, [unit]: parseInt(e.target.value) || 0 }
+              } : acc);
+              render();
+            });
+          });
+        });
+        document.getElementById('addAccount').addEventListener('click', () => {
+          state.accounts.push({ id: state.accounts.length + 1, name: `Konto ${state.accounts.length + 1}`, requirements: { ...UNIT_REQUIREMENTS_DEFAULT } });
+          render();
+        });
+        document.getElementById('fileOption').addEventListener('change', (e) => {
+          state.fileOption = e.target.value;
+          render();
+        });
+        document.getElementById('filePath').addEventListener('change', (e) => {
+          state.filePath = e.target.value;
+          render();
+        });
+        document.getElementById('nextConfig').addEventListener('click', () => {
+          state.currentStep = 'speeds';
+          render();
+        });
+      } else if (state.currentStep === 'speeds') {
+        app.innerHTML = `
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">${t.speedsTitle}</h2>
+            ${state.accounts.map(account => `
+              <div class="mb-4 p-4 border rounded-md">
+                <h3 class="text-lg font-semibold">${account.name}</h3>
+                ${Object.keys(SPEED_TIMES).map(speed => `
+                  <div class="flex items-center mb-2">
+                    <img src="${DEFAULT_IMAGES[speed]}" alt="${speed}" class="w-8 h-8 mr-2 rounded">
+                    <label class="text-sm font-medium mr-2">${t.speedLabel.replace('{speed}', speed)}</label>
+                    <input type="number" min="0" value="${state.speeds[account.id]?.[speed] || ''}" id="speed${account.id}_${speed}" class="w-24 p-2 border rounded-md">
+                  </div>
+                `).join('')}
+                <label class="block text-sm font-medium">${t.gemsLabel}</label>
+                <input type="number" min="0" value="${state.gems[account.id] || ''}" id="gems${account.id}" class="w-full p-2 border rounded-md">
+              </div>
+            `).join('')}
+            <button id="nextSpeeds" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
+            <button id="backSpeeds" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+          </div>
+        `;
+        state.accounts.forEach(account => {
+          Object.keys(SPEED_TIMES).forEach(speed => {
+            document.getElementById(`speed${account.id}_${speed}`).addEventListener('change', (e) => {
+              state.speeds[account.id] = { ...state.speeds[account.id], [speed]: parseInt(e.target.value) || 0 };
+              render();
+            });
+          });
+          document.getElementById(`gems${account.id}`).addEventListener('change', (e) => {
+            state.gems[account.id] = parseInt(e.target.value) || 0;
+            render();
+          });
+        });
+        document.getElementById('nextSpeeds').addEventListener('click', () => {
+          state.currentStep = 'trainSpeeds';
+          render();
+        });
+        document.getElementById('backSpeeds').addEventListener('click', () => {
+          state.currentStep = 'config';
+          render();
+        });
+      } else if (state.currentStep === 'trainSpeeds') {
+        app.innerHTML = `
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">${t.trainSpeedsTitle}</h2>
+            ${state.accounts.map(account => `
+              <div class="mb-4 p-4 border rounded-md">
+                <h3 class="text-lg font-semibold">${account.name}</h3>
+                ${Object.keys(SPEED_TIMES).map(speed => `
+                  <div class="flex items-center mb-2">
+                    <img src="${DEFAULT_IMAGES[speed]}" alt="${speed}" class="w-8 h-8 mr-2 rounded">
+                    <label class="text-sm font-medium mr-2">${t.speedLabel.replace('{speed}', speed)}</label>
+                    <input type="number" min="0" value="${state.trainSpeeds[account.id]?.[speed] || ''}" id="trainSpeed${account.id}_${speed}" class="w-24 p-2 border rounded-md">
+                  </div>
+                `).join('')}
+              </div>
+            `).join('')}
+            <button id="nextTrainSpeeds" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
+            <button id="backTrainSpeeds" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+          </div>
+        `;
+        state.accounts.forEach(account => {
+          Object.keys(SPEED_TIMES).forEach(speed => {
+            document.getElementById(`trainSpeed${account.id}_${speed}`).addEventListener('change', (e) => {
+              state.trainSpeeds[account.id] = { ...state.trainSpeeds[account.id], [speed]: parseInt(e.target.value) || 0 };
+              render();
+            });
+          });
+        });
+        document.getElementById('nextTrainSpeeds').addEventListener('click', () => {
+          state.currentStep = 'units';
+          render();
+        });
+        document.getElementById('backTrainSpeeds').addEventListener('click', () => {
+          state.currentStep = 'speeds';
+          render();
+        });
+      } else if (state.currentStep === 'units') {
+        app.innerHTML = `
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">${t.unitsTitle}</h2>
+            ${state.accounts.map(account => `
+              <div class="mb-4 p-4 border rounded-md">
+                <h3 class="text-lg font-semibold">${account.name}</h3>
+                ${Object.keys(UNIT_REQUIREMENTS_DEFAULT).map(unit => `
+                  <div class="flex items-center mb-2">
+                    <img src="${DEFAULT_IMAGES[unit]}" alt="${unit}" class="w-8 h-8 mr-2 rounded">
+                    <label class="text-sm font-medium mr-2">${t.unitInput.replace('{unit}', t.units[unit])}</label>
+                    <input type="number" min="0" value="${state.units[account.id]?.[unit] || ''}" id="unit${account.id}_${unit}" class="w-24 p-2 border rounded-md">
+                  </div>
+                `).join('')}
+              </div>
+            `).join('')}
+            <button id="nextUnits" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
+            <button id="backUnits" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+          </div>
+        `;
+        state.accounts.forEach(account => {
+          Object.keys(UNIT_REQUIREMENTS_DEFAULT).forEach(unit => {
+            document.getElementById(`unit${account.id}_${unit}`).addEventListener('change', (e) => {
+              state.units[account.id] = { ...state.units[account.id], [unit]: parseInt(e.target.value) || 0 };
+              render();
+            });
+          });
+        });
+        document.getElementById('nextUnits').addEventListener('click', () => {
+          state.currentStep = 'trainings';
+          render();
+        });
+        document.getElementById('backUnits').addEventListener('click', () => {
+          state.currentStep = 'trainSpeeds';
+          render();
+        });
+      } else if (state.currentStep === 'trainings') {
+        app.innerHTML = `
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">${t.trainingTitle}</h2>
+            <div class="mb-4">
+              <label class="block text-sm font-medium">${t.barracksLabel}</label>
+              <input type="number" min="0" value="${state.barracks}" id="barracks" class="w-full p-2 border rounded-md">
+            </div>
+            <button id="nextTrainings" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
+            <button id="backTrainings" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+          </div>
+        `;
+        document.getElementById('barracks').addEventListener('change', (e) => {
+          state.barracks = parseInt(e.target.value) || 0;
+          render();
+        });
+        document.getElementById('nextTrainings').addEventListener('click', () => {
+          state.currentStep = 'unitSpeeds';
+          render();
+        });
+        document.getElementById('backTrainings').addEventListener('click', () => {
+          state.currentStep = 'units';
+          render();
+        });
+      } else if (state.currentStep === 'unitSpeeds') {
+        app.innerHTML = `
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">${t.unitSpeedsTitle}</h2>
+            <div class="mb-4">
+              <label class="block text-sm font-medium">${t.boostLabel}</label>
+              <input type="text" value="${state.boost}" id="boost" class="w-full p-2 border rounded-md">
+            </div>
+            <button id="previewResults" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.previewResults}</button>
+            <button id="backUnitSpeeds" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+          </div>
+        `;
+        document.getElementById('boost').addEventListener('change', (e) => {
+          state.boost = e.target.value;
+          render();
+        });
+        document.getElementById('previewResults').addEventListener('click', generateOutput);
+        document.getElementById('backUnitSpeeds').addEventListener('click', () => {
+          state.currentStep = 'trainings';
+          render();
+        });
+      } else if (state.currentStep === 'preview') {
+        app.innerHTML = `
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">${t.previewTitle}</h2>
+            <div class="max-h-[600px] overflow-y-auto p-4 bg-gray-50 border rounded">
+              ${state.results.map((result, index) => `
+                <pre class="text-sm font-normal whitespace-pre-wrap mb-4">${result}</pre>
+              `).join('')}
+            </div>
+            <button id="downloadResults" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.downloadResults}</button>
+            <button id="backPreview" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+          </div>
+        `;
+        document.getElementById('downloadResults').addEventListener('click', downloadResults);
+        document.getElementById('backPreview').addEventListener('click', () => {
+          state.currentStep = 'unitSpeeds';
+          render();
+        });
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>

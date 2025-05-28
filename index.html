@@ -26,7 +26,9 @@
     };
 
     const UNIT_REQUIREMENTS_DEFAULT = {
+      'Piechota1': 2000000, 'Łuki1': 2000000, 'Kawaleria1': 2000000,
       'Piechota2': 1000000, 'Łuki2': 1000000, 'Kawaleria2': 1000000,
+      'Piechota3': 750000, 'Łuki3': 750000, 'Kawaleria3': 750000,
       'Piechota4': 500000, 'Łuki4': 500000, 'Kawaleria4': 500000
     };
 
@@ -40,9 +42,15 @@
       '30min': 'https://via.placeholder.com/30?text=30m',
       '15min': 'https://via.placeholder.com/30?text=15m',
       '10min': 'https://via.placeholder.com/30?text=10m',
+      'Piechota1': 'https://via.placeholder.com/30?text=PiechT1',
+      'Łuki1': 'https://via.placeholder.com/30?text=ŁukiT1',
+      'Kawaleria1': 'https://via.placeholder.com/30?text=KawT1',
       'Piechota2': 'https://via.placeholder.com/30?text=PiechT2',
       'Łuki2': 'https://via.placeholder.com/30?text=ŁukiT2',
       'Kawaleria2': 'https://via.placeholder.com/30?text=KawT2',
+      'Piechota3': 'https://via.placeholder.com/30?text=PiechT3',
+      'Łuki3': 'https://via.placeholder.com/30?text=ŁukiT3',
+      'Kawaleria3': 'https://via.placeholder.com/30?text=KawT3',
       'Piechota4': 'https://via.placeholder.com/30?text=PiechT4',
       'Łuki4': 'https://via.placeholder.com/30?text=ŁukiT4',
       'Kawaleria4': 'https://via.placeholder.com/30?text=KawT4'
@@ -78,6 +86,7 @@
         previewResults: 'Podgląd wyników',
         previewTitle: 'Podgląd wyników',
         downloadResults: 'Pobierz wyniki',
+        downloadError: 'Brak wyników do pobrania. Wygeneruj wyniki ponownie.',
         output: {
           accountHeader: '===== Konto {id}: {name} =====',
           normalSpeeds: 'Przyspieszenia zwykłe',
@@ -92,7 +101,9 @@
           timestamp: 'Stan na: {date}',
           trainings: 'Potrzebna liczba szkoleń {unit}: {count}',
           unitSpeeds: 'Wymagane przyspieszenia na brakujące {unit}:',
+          t1Speeds: 'Wymagane przyspieszenia na brakujące T1:',
           t2Speeds: 'Wymagane przyspieszenia na brakujące T2:',
+          t3Speeds: 'Wymagane przyspieszenia na brakujące T3:',
           t4Speeds: 'Wymagane przyspieszenia na brakujące T4:',
           totalSpeeds: 'Wymagane przyspieszenia na całe brakujące wojsko:',
           comparisonHeader: 'Porównanie z poprzednim zapisem ({date}):',
@@ -103,11 +114,17 @@
           accountSeparator: '='.repeat(60)
         },
         units: {
+          'Piechota1': 'piechoty T1',
           'Piechota2': 'piechoty T2',
+          'Piechota3': 'piechoty T3',
           'Piechota4': 'piechoty T4',
+          'Łuki1': 'łuczników T1',
           'Łuki2': 'łuczników T2',
+          'Łuki3': 'łuczników T3',
           'Łuki4': 'łuczników T4',
+          'Kawaleria1': 'kawalerii T1',
           'Kawaleria2': 'kawalerii T2',
+          'Kawaleria3': 'kawalerii T3',
           'Kawaleria4': 'kawalerii T4'
         },
         locale: 'pl-PL'
@@ -141,6 +158,7 @@
         previewResults: 'Preview Results',
         previewTitle: 'Results Preview',
         downloadResults: 'Download Results',
+        downloadError: 'No results to download. Please generate results again.',
         output: {
           accountHeader: '===== Account {id}: {name} =====',
           normalSpeeds: 'Normal Speeds',
@@ -155,7 +173,9 @@
           timestamp: 'As of: {date}',
           trainings: 'Required number of trainings for {unit}: {count}',
           unitSpeeds: 'Required speeds for missing {unit}:',
+          t1Speeds: 'Required speeds for missing T1:',
           t2Speeds: 'Required speeds for missing T2:',
+          t3Speeds: 'Required speeds for missing T3:',
           t4Speeds: 'Required speeds for missing T4:',
           totalSpeeds: 'Required speeds for all missing troops:',
           comparisonHeader: 'Comparison with previous record ({date}):',
@@ -166,11 +186,17 @@
           accountSeparator: '='.repeat(60)
         },
         units: {
+          'Piechota1': 'infantry T1',
           'Piechota2': 'infantry T2',
+          'Piechota3': 'infantry T3',
           'Piechota4': 'infantry T4',
+          'Łuki1': 'archers T1',
           'Łuki2': 'archers T2',
+          'Łuki3': 'archers T3',
           'Łuki4': 'archers T4',
+          'Kawaleria1': 'cavalry T1',
           'Kawaleria2': 'cavalry T2',
+          'Kawaleria3': 'cavalry T3',
           'Kawaleria4': 'cavalry T4'
         },
         locale: 'en-US'
@@ -204,6 +230,7 @@
         previewResults: 'Vista previa de resultados',
         previewTitle: 'Vista previa de resultados',
         downloadResults: 'Descargar resultados',
+        downloadError: 'No hay resultados para descargar. Genera los resultados de nuevo.',
         output: {
           accountHeader: '===== Cuenta {id}: {name} =====',
           normalSpeeds: 'Velocidades normales',
@@ -218,7 +245,9 @@
           timestamp: 'A fecha de: {date}',
           trainings: 'Número requerido de entrenamientos para {unit}: {count}',
           unitSpeeds: 'Velocidades requeridas para las {unit} faltantes:',
+          t1Speeds: 'Velocidades requeridas para las T1 faltantes:',
           t2Speeds: 'Velocidades requeridas para las T2 faltantes:',
+          t3Speeds: 'Velocidades requeridas para las T3 faltantes:',
           t4Speeds: 'Velocidades requeridas para las T4 faltantes:',
           totalSpeeds: 'Velocidades requeridas para todas las tropas faltantes:',
           comparisonHeader: 'Comparación con el registro anterior ({date}):',
@@ -229,11 +258,17 @@
           accountSeparator: '='.repeat(60)
         },
         units: {
+          'Piechota1': 'infantería T1',
           'Piechota2': 'infantería T2',
+          'Piechota3': 'infantería T3',
           'Piechota4': 'infantería T4',
+          'Łuki1': 'arqueros T1',
           'Łuki2': 'arqueros T2',
+          'Łuki3': 'arqueros T3',
           'Łuki4': 'arqueros T4',
+          'Kawaleria1': 'caballería T1',
           'Kawaleria2': 'caballería T2',
+          'Kawaleria3': 'caballería T3',
           'Kawaleria4': 'caballería T4'
         },
         locale: 'es-ES'
@@ -267,6 +302,7 @@
         previewResults: 'Ergebnisse anzeigen',
         previewTitle: 'Ergebnisvorschau',
         downloadResults: 'Ergebnisse herunterladen',
+        downloadError: 'Keine Ergebnisse zum Herunterladen. Bitte Ergebnisse erneut generieren.',
         output: {
           accountHeader: '===== Konto {id}: {name} =====',
           normalSpeeds: 'Normale Geschwindigkeiten',
@@ -281,7 +317,9 @@
           timestamp: 'Stand: {date}',
           trainings: 'Benötigte Anzahl an Trainings für {unit}: {count}',
           unitSpeeds: 'Benötigte Geschwindigkeiten für fehlende {unit}:',
+          t1Speeds: 'Benötigte Geschwindigkeiten für fehlende T1:',
           t2Speeds: 'Benötigte Geschwindigkeiten für fehlende T2:',
+          t3Speeds: 'Benötigte Geschwindigkeiten für fehlende T3:',
           t4Speeds: 'Benötigte Geschwindigkeiten für fehlende T4:',
           totalSpeeds: 'Benötigte Geschwindigkeiten für alle fehlenden Truppen:',
           comparisonHeader: 'Vergleich mit vorherigem Datensatz ({date}):',
@@ -292,11 +330,17 @@
           accountSeparator: '='.repeat(60)
         },
         units: {
+          'Piechota1': 'Infanterie T1',
           'Piechota2': 'Infanterie T2',
+          'Piechota3': 'Infanterie T3',
           'Piechota4': 'Infanterie T4',
+          'Łuki1': 'Bogenschützen T1',
           'Łuki2': 'Bogenschützen T2',
+          'Łuki3': 'Bogenschützen T3',
           'Łuki4': 'Bogenschützen T4',
+          'Kawaleria1': 'Kavallerie T1',
           'Kawaleria2': 'Kavallerie T2',
+          'Kawaleria3': 'Kavallerie T3',
           'Kawaleria4': 'Kavallerie T4'
         },
         locale: 'de-DE'
@@ -330,6 +374,7 @@
         previewResults: 'Aperçu des résultats',
         previewTitle: 'Aperçu des résultats',
         downloadResults: 'Télécharger les résultats',
+        downloadError: 'Aucun résultat à télécharger. Veuillez générer les résultats à nouveau.',
         output: {
           accountHeader: '===== Compte {id} : {name} =====',
           normalSpeeds: 'Vitesses normales',
@@ -344,7 +389,9 @@
           timestamp: 'Au : {date}',
           trainings: 'Nombre requis d’entraînements pour {unit} : {count}',
           unitSpeeds: 'Vitesses requises pour les {unit} manquantes :',
+          t1Speeds: 'Vitesses requises pour les T1 manquantes :',
           t2Speeds: 'Vitesses requises pour les T2 manquantes :',
+          t3Speeds: 'Vitesses requises pour les T3 manquantes :',
           t4Speeds: 'Vitesses requises pour les T4 manquantes :',
           totalSpeeds: 'Vitesses requises pour toutes les troupes manquantes :',
           comparisonHeader: 'Comparaison avec l’enregistrement précédent ({date}) :',
@@ -355,11 +402,17 @@
           accountSeparator: '='.repeat(60)
         },
         units: {
+          'Piechota1': 'infanterie T1',
           'Piechota2': 'infanterie T2',
+          'Piechota3': 'infanterie T3',
           'Piechota4': 'infanterie T4',
+          'Łuki1': 'archers T1',
           'Łuki2': 'archers T2',
+          'Łuki3': 'archers T3',
           'Łuki4': 'archers T4',
+          'Kawaleria1': 'cavalerie T1',
           'Kawaleria2': 'cavalerie T2',
+          'Kawaleria3': 'cavalerie T3',
           'Kawaleria4': 'cavalerie T4'
         },
         locale: 'fr-FR'
@@ -385,8 +438,8 @@
 
     function timeToDHM(minutes) {
       const days = Math.floor(minutes / 1440);
-      const hours = Math.floor((minutes / 1440 - days) * 24);
-      const mins = Math.floor(((minutes / 1440 - days) * 24 - hours) * 60);
+      const hours = Math.floor((minutes % 1440) / 60);
+      const mins = minutes % 60;
       return { days, hours, mins };
     }
 
@@ -425,7 +478,7 @@
                   unit = unit.replace(/piechoty|infantry|infantería|Infanterie|infanterie/, 'Piechota')
                     .replace(/łuczników|archers|arqueros|B.genschützen|archers/i, 'Łuki')
                     .replace(/kawalerii|cavalry|caballería|Kavallerie|cavalerie/, 'Kawaleria')
-                    .replace(' T2', '2').replace(' T4', '4');
+                    .replace(' T1', '1').replace(' T2', '2').replace(' T3', '3').replace(' T4', '4');
                   accountsData[currentAccount].units[unit] = parseInt(match[2]);
                 }
               }
@@ -442,35 +495,42 @@
     }
 
     function calculateSpeeds(speedsData) {
-      const totalMinutes = Object.keys(speedsData).reduce(
+      const totalMinutes = Object.keys(speedsData || {}).reduce(
         (sum, key) => sum + (speedsData[key] || 0) * SPEED_TIMES[key], 0
       );
       return timeToDHM(totalMinutes);
     }
 
     function calculateTrainings(unitsData, barracks) {
-      return Object.keys(unitsData).reduce((acc, unit) => ({
+      if (!barracks) return {};
+      return Object.keys(unitsData || {}).reduce((acc, unit) => ({
         ...acc,
-        [unit]: Math.round(unitsData[unit] / barracks)
+        [unit]: Math.ceil(unitsData[unit] / barracks)
       }), {});
     }
 
     function calculateUnitSpeeds(unitsData, boostValue) {
-      const results = { t2: 0, t4: 0 };
+      const results = { t1: 0, t2: 0, t3: 0, t4: 0 };
       const content = [];
-      Object.keys(unitsData).forEach(unit => {
-        const baseTime = unit.endsWith('2') ? 30 : 120;
+      Object.keys(unitsData || {}).forEach(unit => {
+        let baseTime;
+        if (unit.endsWith('1')) baseTime = 15;
+        else if (unit.endsWith('2')) baseTime = 30;
+        else if (unit.endsWith('3')) baseTime = 60;
+        else if (unit.endsWith('4')) baseTime = 120;
         const adjustedTime = baseTime / (1 + boostValue);
         const totalSeconds = adjustedTime * unitsData[unit];
         const days = Math.round(totalSeconds / 86400);
-        if (unit.endsWith('2')) results.t2 += days;
-        else results.t4 += days;
+        if (unit.endsWith('1')) results.t1 += days;
+        else if (unit.endsWith('2')) results.t2 += days;
+        else if (unit.endsWith('3')) results.t3 += days;
+        else if (unit.endsWith('4')) results.t4 += days;
         const { days: d, hours: h, mins: m } = timeToDHM(days * 1440);
-        const unitName = TRANSLATIONS[state.language].units[unit];
-        content.push(`${TRANSLATIONS[state.language].output.unitSpeeds.replace('{unit}', unitName)}\n\n` +
+        const unitName = TRANSLATIONS[state.language].units[unit] || unit;
+        content.push(`${TRANSLATIONS[state.language].output.unitSpeeds.replace('{unit}', unitName)}\n` +
                     `${TRANSLATIONS[state.language].output.days.replace('{days}', d)}\n` +
                     `${TRANSLATIONS[state.language].output.hours.replace('{hours}', h)}\n` +
-                    `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', m)}\n${TRANSLATIONS[state.language].output.separator}\n`);
+                    `${TRANSLATIONS[state.language].output.minutes.replace('{mins}', m)}\n${TRANSLATIONS[state.language].output.separator}\n`);
       });
       return { results, content };
     }
@@ -492,7 +552,7 @@
         const target = account.requirements[unit];
         const percentChange = target ? (diff / target * 100).toFixed(2) : 0;
         const dailyChange = (diff / daysDiff).toFixed(2);
-        const unitName = TRANSLATIONS[state.language].units[unit];
+        const unitName = TRANSLATIONS[state.language].units[unit] || unit;
         comparison += TRANSLATIONS[state.language].output.comparisonDiff
           .replace('{unit}', unitName)
           .replace('{diff}', `${diff >= 0 ? '+' : ''}${diff}`)
@@ -505,76 +565,105 @@
 
     function generateOutput() {
       const outputs = state.accounts.map(account => {
-        const speedResult = calculateSpeeds(state.speeds[account.id] || {});
-        const trainSpeedResult = calculateSpeeds(state.trainSpeeds[account.id] || {});
+        const speedResult = calculateSpeeds(state.speeds[account.id]);
+        const trainSpeedResult = calculateSpeeds(state.trainSpeeds[account.id]);
         const gems_15h = Math.floor((state.gems[account.id] || 0) / 3000);
         const gems_24h = Math.floor((state.gems[account.id] || 0) / 4500);
-        const unitData = state.units[account.id] || {};
+        const unitData = Object.keys(state.units[account.id] || {}).reduce((acc, unit) => {
+          const required = account.requirements[unit] || 0;
+          const current = state.units[account.id][unit] || 0;
+          return { ...acc, [unit]: Math.max(0, required - current) };
+        }, {});
         const trainingData = state.barracks ? calculateTrainings(unitData, state.barracks) : {};
-        const unitSpeedData = state.boost ? calculateUnitSpeeds(unitData, parseBoost(state.boost)) : { results: { t2: 0, t4: 0 }, content: [] };
+        const unitSpeedData = state.boost ? calculateUnitSpeeds(unitData, parseBoost(state.boost)) : { results: { t1: 0, t2: 0, t3: 0, t4: 0 }, content: [] };
         const comparison = generateComparison(account, unitData, state.previousData);
 
         return (
           `${TRANSLATIONS[state.language].output.accountHeader.replace('{id}', account.id).replace('{name}', account.name)}\n\n` +
-          `${TRANSLATIONS[state.language].output.normalSpeeds}\n\n` +
+          `${TRANSLATIONS[state.language].output.normalSpeeds}\n` +
           `${TRANSLATIONS[state.language].output.days.replace('{days}', speedResult.days)}\n` +
           `${TRANSLATIONS[state.language].output.hours.replace('{hours}', speedResult.hours)}\n` +
-          `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', speedResult.mins)}\n` +
+          `${TRANSLATIONS[state.language].output.minutes.replace('{mins}', speedResult.mins)}\n` +
           `${TRANSLATIONS[state.language].output.gems.replace('{gems}', state.gems[account.id] || 0)}\n` +
           `${TRANSLATIONS[state.language].output.gems15h.replace('{count}', gems_15h)}\n` +
           `${TRANSLATIONS[state.language].output.gems24h.replace('{count}', gems_24h)}\n${TRANSLATIONS[state.language].output.separator}\n` +
-          `${TRANSLATIONS[state.language].output.trainSpeeds}\n\n` +
+          `${TRANSLATIONS[state.language].output.trainSpeeds}\n` +
           `${TRANSLATIONS[state.language].output.days.replace('{days}', trainSpeedResult.days)}\n` +
           `${TRANSLATIONS[state.language].output.hours.replace('{hours}', trainSpeedResult.hours)}\n` +
-          `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', trainSpeedResult.mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+          `${TRANSLATIONS[state.language].output.minutes.replace('{mins}', trainSpeedResult.mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
           Object.keys(unitData).map(unit => 
-            `${TRANSLATIONS[state.language].output.missingUnits.replace('{unit}', TRANSLATIONS[state.language].units[unit]).replace('{count}', unitData[unit])}\n`
+            `${TRANSLATIONS[state.language].output.missingUnits.replace('{unit}', TRANSLATIONS[state.language].units[unit] || unit).replace('{count}', unitData[unit])}\n`
           ).join('') +
           `\n${TRANSLATIONS[state.language].output.timestamp.replace('{date}', new Date().toLocaleString(TRANSLATIONS[state.language].locale, { timeZone: 'Europe/Warsaw' }))}\n${TRANSLATIONS[state.language].output.separator}\n` +
           (state.barracks ? Object.keys(trainingData).map(unit => 
-            `${TRANSLATIONS[state.language].output.trainings.replace('{unit}', TRANSLATIONS[state.language].units[unit]).replace('{count}', trainingData[unit])}\n`
+            `${TRANSLATIONS[state.language].output.trainings.replace('{unit}', TRANSLATIONS[state.language].units[unit] || unit).replace('{count}', trainingData[unit])}\n`
           ).join('') + `\n${TRANSLATIONS[state.language].output.trainingSeparator}\n` : '') +
           (state.boost ? unitSpeedData.content.join('') +
-            `${TRANSLATIONS[state.language].output.t2Speeds}\n\n` +
+            `${TRANSLATIONS[state.language].output.t1Speeds}\n` +
+            `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM(unitSpeedData.results.t1 * 1440).days)}\n` +
+            `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM(unitSpeedData.results.t1 * 1440).hours)}\n` +
+            `${TRANSLATIONS[state.language].output.minutes.replace('{mins}', timeToDHM(unitSpeedData.results.t1 * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+            `${TRANSLATIONS[state.language].output.t2Speeds}\n` +
             `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM(unitSpeedData.results.t2 * 1440).days)}\n` +
             `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM(unitSpeedData.results.t2 * 1440).hours)}\n` +
-            `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', timeToDHM(unitSpeedData.results.t2 * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
-            `${TRANSLATIONS[state.language].output.t4Speeds}\n\n` +
+            `${TRANSLATIONS[state.language].output.minutes.replace('{mins}', timeToDHM(unitSpeedData.results.t2 * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+            `${TRANSLATIONS[state.language].output.t3Speeds}\n` +
+            `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM(unitSpeedData.results.t3 * 1440).days)}\n` +
+            `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM(unitSpeedData.results.t3 * 1440).hours)}\n` +
+            `${TRANSLATIONS[state.language].output.minutes.replace('{mins}', timeToDHM(unitSpeedData.results.t3 * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+            `${TRANSLATIONS[state.language].output.t4Speeds}\n` +
             `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM(unitSpeedData.results.t4 * 1440).days)}\n` +
             `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM(unitSpeedData.results.t4 * 1440).hours)}\n` +
-            `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', timeToDHM(unitSpeedData.results.t4 * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
-            `${TRANSLATIONS[state.language].output.totalSpeeds}\n\n` +
-            `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM((unitSpeedData.results.t2 + unitSpeedData.results.t4) * 1440).days)}\n` +
-            `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM((unitSpeedData.results.t2 + unitSpeedData.results.t4) * 1440).hours)}\n` +
-            `${TRANSLATIONS[state.language].output.minutes.replace('{minutes}', timeToDHM((unitSpeedData.results.t2 + unitSpeedData.results.t4) * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` : '') +
+            `${TRANSLATIONS[state.language].output.minutes.replace('{mins}', timeToDHM(unitSpeedData.results.t4 * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` +
+            `${TRANSLATIONS[state.language].output.totalSpeeds}\n` +
+            `${TRANSLATIONS[state.language].output.days.replace('{days}', timeToDHM((unitSpeedData.results.t1 + unitSpeedData.results.t2 + unitSpeedData.results.t3 + unitSpeedData.results.t4) * 1440).days)}\n` +
+            `${TRANSLATIONS[state.language].output.hours.replace('{hours}', timeToDHM((unitSpeedData.results.t1 + unitSpeedData.results.t2 + unitSpeedData.results.t3 + unitSpeedData.results.t4) * 1440).hours)}\n` +
+            `${TRANSLATIONS[state.language].output.minutes.replace('{mins}', timeToDHM((unitSpeedData.results.t1 + unitSpeedData.results.t2 + unitSpeedData.results.t3 + unitSpeedData.results.t4) * 1440).mins)}\n${TRANSLATIONS[state.language].output.separator}\n` : '') +
           comparison +
           `\n${TRANSLATIONS[state.language].output.accountSeparator}\n\n`
         );
       });
-      state.results = outputs;
+      state.results = outputs.filter(output => output && typeof output === 'string');
       state.currentStep = 'preview';
       render();
     }
 
     function downloadResults() {
-      if (state.fileOption === 'single') {
-        const blob = new Blob([state.results.join('\n')], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = state.filePath || 'wyniki.txt';
-        a.click();
-        URL.revokeObjectURL(url);
-      } else {
-        state.results.forEach((output, index) => {
-          const blob = new Blob([output], { type: 'text/plain' });
+      if (!state.results || state.results.length === 0) {
+        alert(TRANSLATIONS[state.language].downloadError);
+        return;
+      }
+
+      try {
+        if (state.fileOption === 'single') {
+          const content = state.results.join('\n');
+          const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = state.filePath ? `${state.filePath}_${state.accounts[index].name}.txt` : `wyniki_${state.accounts[index].name}.txt`;
+          a.download = state.filePath ? `${state.filePath}.txt` : 'wyniki.txt';
+          document.body.appendChild(a);
           a.click();
+          document.body.removeChild(a);
           URL.revokeObjectURL(url);
-        });
+        } else {
+          state.results.forEach((output, index) => {
+            if (!output) return;
+            const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const accountName = state.accounts[index]?.name.replace(/[^a-zA-Z0-9]/g, '_') || `konto_${index + 1}`;
+            a.download = state.filePath ? `${state.filePath}_${accountName}.txt` : `wyniki_${accountName}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          });
+        }
+      } catch (err) {
+        console.error('Błąd podczas pobierania:', err);
+        alert(TRANSLATIONS[state.language].downloadError);
       }
     }
 
@@ -593,7 +682,7 @@
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium">Język:</label>
-              <select id="languageSelect" class="w-full p-2 border rounded-md">
+              <select id="languageSelect" class="w-full p-2 border rounded">
                 <option value="pl" ${state.language === 'pl' ? 'selected' : ''}>Polski</option>
                 <option value="en" ${state.language === 'en' ? 'selected' : ''}>English</option>
                 <option value="es" ${state.language === 'es' ? 'selected' : ''}>Español</option>
@@ -603,24 +692,24 @@
             </div>
             <div class="mb-4">
               <label class="block text-sm font-medium">${t.uploadFile}</label>
-              <input type="file" accept="text/plain" id="uploadFile" class="w-full p-2 border rounded-md">
+              <input type="file" accept="text/plain" id="fileUpload" class="w-full p-2 border rounded-md">
               ${state.uploadError ? `<p class="text-red-500 text-sm mt-2">${state.uploadError}</p>` : ''}
             </div>
             ${state.accounts.map(account => `
               <div class="mb-4 p-4 border rounded-md">
                 <label class="block text-sm font-medium">${t.accountName.replace('{count}', account.id)}</label>
-                <input type="text" value="${account.name}" id="accountName${account.id}" class="w-full p-2 border rounded-md mb-2">
+                <input type="text" value="${account.name}" id="account-${account.id}" class="w-full p-2 border rounded-md mb-2">
                 <h3 class="text-lg font-semibold">${t.targetUnits}</h3>
                 ${Object.keys(UNIT_REQUIREMENTS_DEFAULT).map(unit => `
                   <div class="flex items-center mb-2">
                     <img src="${DEFAULT_IMAGES[unit]}" alt="${unit}" class="w-8 h-8 mr-2 rounded">
                     <label class="text-sm font-medium mr-2">${t.units[unit]}:</label>
-                    <input type="number" value="${account.requirements[unit]}" id="unit${account.id}_${unit}" min="0" class="w-24 p-2 border rounded-md">
+                    <input type="number" value="${account.requirements[unit]}" id="unit-${account.id}-${unit}" min="0" class="w-full p-2 border rounded-md">
                   </div>
                 `).join('')}
               </div>
             `).join('')}
-            <button id="addAccount" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.addAccount}</button>
+            <button id="add-account" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.addAccount}</button>
             <div class="mt-4">
               <label class="block text-sm font-medium">${t.fileSaving}</label>
               <select id="fileOption" class="w-full p-2 border rounded-md mb-2">
@@ -635,23 +724,24 @@
         `;
         document.getElementById('accountCount').addEventListener('change', (e) => {
           const count = parseInt(e.target.value) || 1;
-          state.accounts = Array.from({ length: Math.min(count, 10) }, (_, i) => (
+          const newAccounts = Array.from({ length: Math.min(count, 10) }, (_, i) => (
             state.accounts[i] || { id: i + 1, name: `Konto ${i + 1}`, requirements: { ...UNIT_REQUIREMENTS_DEFAULT } }
           ));
+          state.accounts = newAccounts;
           render();
         });
         document.getElementById('languageSelect').addEventListener('change', (e) => {
           state.language = e.target.value;
           render();
         });
-        document.getElementById('uploadFile').addEventListener('change', handleFileUpload);
+        document.getElementById('fileUpload').addEventListener('change', handleFileUpload);
         state.accounts.forEach(account => {
-          document.getElementById(`accountName${account.id}`).addEventListener('change', (e) => {
+          document.getElementById(`account-${account.id}`).addEventListener('change', (e) => {
             state.accounts = state.accounts.map(acc => acc.id === account.id ? { ...acc, name: e.target.value } : acc);
             render();
           });
           Object.keys(UNIT_REQUIREMENTS_DEFAULT).forEach(unit => {
-            document.getElementById(`unit${account.id}_${unit}`).addEventListener('change', (e) => {
+            document.getElementById(`unit-${account.id}-${unit}`).addEventListener('change', (e) => {
               state.accounts = state.accounts.map(acc => acc.id === account.id ? {
                 ...acc,
                 requirements: { ...acc.requirements, [unit]: parseInt(e.target.value) || 0 }
@@ -660,7 +750,7 @@
             });
           });
         });
-        document.getElementById('addAccount').addEventListener('click', () => {
+        document.getElementById('add-account').addEventListener('click', () => {
           state.accounts.push({ id: state.accounts.length + 1, name: `Konto ${state.accounts.length + 1}`, requirements: { ...UNIT_REQUIREMENTS_DEFAULT } });
           render();
         });
@@ -679,33 +769,35 @@
       } else if (state.currentStep === 'speeds') {
         app.innerHTML = `
           <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">${t.speedsTitle}</h2>
-            ${state.accounts.map(account => `
-              <div class="mb-4 p-4 border rounded-md">
-                <h3 class="text-lg font-semibold">${account.name}</h3>
-                ${Object.keys(SPEED_TIMES).map(speed => `
-                  <div class="flex items-center mb-2">
-                    <img src="${DEFAULT_IMAGES[speed]}" alt="${speed}" class="w-8 h-8 mr-2 rounded">
-                    <label class="text-sm font-medium mr-2">${t.speedLabel.replace('{speed}', speed)}</label>
-                    <input type="number" min="0" value="${state.speeds[account.id]?.[speed] || ''}" id="speed${account.id}_${speed}" class="w-24 p-2 border rounded-md">
-                  </div>
-                `).join('')}
-                <label class="block text-sm font-medium">${t.gemsLabel}</label>
-                <input type="number" min="0" value="${state.gems[account.id] || ''}" id="gems${account.id}" class="w-full p-2 border rounded-md">
-              </div>
-            `).join('')}
+            <h2 class="text-xl font-semibold mb-4">${t.speedsTitle}</h2>
+            <div class="mb-4 p-4 border rounded-md">
+              ${state.accounts.map(account => `
+                <div class="mb-4">
+                  <h3 class="text-lg font-semibold mb-2">${account.name}</h3>
+                  ${Object.keys(SPEED_TIMES).map(speed => `
+                    <div class="flex items-center mb-2">
+                      <img src="${DEFAULT_IMAGES[speed]}" alt="${speed}" class="w-8 h-8 mr-2 rounded">
+                      <label class="text-sm font-medium mr-2">${t.speedLabel.replace('{speed}', speed)}</label>
+                      <input type="number" value="${state.speeds[account.id]?.[speed] || ''}" id="speed-${account.id}-${speed}" class="w-64 p-2 border rounded">
+                    </div>
+                  `).join('')}
+                  <label class="block text-sm font-medium mb-1">${t.gemsLabel}</label>
+                  <input type="number" value="${state.gems[account.id] || ''}" id="gems-${account.id}" class="w-full p-2 border rounded-md">
+                </div>
+              `).join('')}
+            </div>
             <button id="nextSpeeds" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
-            <button id="backSpeeds" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+            <button id="backSpeeds" class="mt-4 ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.back}</button>
           </div>
         `;
         state.accounts.forEach(account => {
           Object.keys(SPEED_TIMES).forEach(speed => {
-            document.getElementById(`speed${account.id}_${speed}`).addEventListener('change', (e) => {
+            document.getElementById(`speed-${account.id}-${speed}`).addEventListener('change', (e) => {
               state.speeds[account.id] = { ...state.speeds[account.id], [speed]: parseInt(e.target.value) || 0 };
               render();
             });
           });
-          document.getElementById(`gems${account.id}`).addEventListener('change', (e) => {
+          document.getElementById(`gems-${account.id}`).addEventListener('change', (e) => {
             state.gems[account.id] = parseInt(e.target.value) || 0;
             render();
           });
@@ -721,26 +813,28 @@
       } else if (state.currentStep === 'trainSpeeds') {
         app.innerHTML = `
           <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">${t.trainSpeedsTitle}</h2>
-            ${state.accounts.map(account => `
-              <div class="mb-4 p-4 border rounded-md">
-                <h3 class="text-lg font-semibold">${account.name}</h3>
-                ${Object.keys(SPEED_TIMES).map(speed => `
-                  <div class="flex items-center mb-2">
-                    <img src="${DEFAULT_IMAGES[speed]}" alt="${speed}" class="w-8 h-8 mr-2 rounded">
-                    <label class="text-sm font-medium mr-2">${t.speedLabel.replace('{speed}', speed)}</label>
-                    <input type="number" min="0" value="${state.trainSpeeds[account.id]?.[speed] || ''}" id="trainSpeed${account.id}_${speed}" class="w-24 p-2 border rounded-md">
-                  </div>
-                `).join('')}
-              </div>
-            `).join('')}
+            <h2 class="text-xl font-semibold mb-4">${t.trainSpeedsTitle}</h2>
+            <div class="mb-4 p-4 border rounded-md">
+              ${state.accounts.map(account => `
+                <div class="mb-4">
+                  <h3 class="text-lg font-semibold mb-2">${account.name}</h3>
+                  ${Object.keys(SPEED_TIMES).map(speed => `
+                    <div class="flex items-center mb-2">
+                      <img src="${DEFAULT_IMAGES[speed]}" alt="${speed}" class="w-8 h-8 mr-2 rounded">
+                      <label class="text-sm font-medium mr-2">${t.speedLabel.replace('{speed}', speed)}</label>
+                      <input type="number" min="0" value="${state.trainSpeeds[account.id]?.[speed] || ''}" id="trainSpeed-${account.id}-${speed}" class="w-64 p-2 border rounded-md">
+                    </div>
+                  `).join('')}
+                </div>
+              `).join('')}
+            </div>
             <button id="nextTrainSpeeds" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
-            <button id="backTrainSpeeds" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+            <button id="backTrainSpeeds" class="mt-4 ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.back}</button>
           </div>
         `;
         state.accounts.forEach(account => {
           Object.keys(SPEED_TIMES).forEach(speed => {
-            document.getElementById(`trainSpeed${account.id}_${speed}`).addEventListener('change', (e) => {
+            document.getElementById(`trainSpeed-${account.id}-${speed}`).addEventListener('change', (e) => {
               state.trainSpeeds[account.id] = { ...state.trainSpeeds[account.id], [speed]: parseInt(e.target.value) || 0 };
               render();
             });
@@ -757,26 +851,28 @@
       } else if (state.currentStep === 'units') {
         app.innerHTML = `
           <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">${t.unitsTitle}</h2>
-            ${state.accounts.map(account => `
-              <div class="mb-4 p-4 border rounded-md">
-                <h3 class="text-lg font-semibold">${account.name}</h3>
-                ${Object.keys(UNIT_REQUIREMENTS_DEFAULT).map(unit => `
-                  <div class="flex items-center mb-2">
-                    <img src="${DEFAULT_IMAGES[unit]}" alt="${unit}" class="w-8 h-8 mr-2 rounded">
-                    <label class="text-sm font-medium mr-2">${t.unitInput.replace('{unit}', t.units[unit])}</label>
-                    <input type="number" min="0" value="${state.units[account.id]?.[unit] || ''}" id="unit${account.id}_${unit}" class="w-24 p-2 border rounded-md">
-                  </div>
-                `).join('')}
-              </div>
-            `).join('')}
+            <h2 class="text-xl font-semibold mb-4">${t.unitsTitle}</h2>
+            <div class="mb-4 p-4 border rounded-md">
+              ${state.accounts.map(account => `
+                <div class="mb-4">
+                  <h3 class="text-lg font-semibold mb-2">${account.name}</h3>
+                  ${Object.keys(UNIT_REQUIREMENTS_DEFAULT).map(unit => `
+                    <div class="flex items-center mb-2">
+                      <img src="${DEFAULT_IMAGES[unit]}" alt="${unit}" class="w-8 h-8 mr-2 rounded">
+                      <label class="text-sm font-medium mr-2">${t.unitInput.replace('{unit}', t.units[unit])}</label>
+                      <input type="number" min="0" value="${state.units[account.id]?.[unit] || ''}" id="unit-${account.id}-${unit}" class="w-64 p-2 border rounded-md">
+                    </div>
+                  `).join('')}
+                </div>
+              `).join('')}
+            </div>
             <button id="nextUnits" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
-            <button id="backUnits" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+            <button id="backUnits" class="mt-4 ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.back}</button>
           </div>
         `;
         state.accounts.forEach(account => {
           Object.keys(UNIT_REQUIREMENTS_DEFAULT).forEach(unit => {
-            document.getElementById(`unit${account.id}_${unit}`).addEventListener('change', (e) => {
+            document.getElementById(`unit-${account.id}-${unit}`).addEventListener('change', (e) => {
               state.units[account.id] = { ...state.units[account.id], [unit]: parseInt(e.target.value) || 0 };
               render();
             });
@@ -793,13 +889,13 @@
       } else if (state.currentStep === 'trainings') {
         app.innerHTML = `
           <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">${t.trainingTitle}</h2>
-            <div class="mb-4">
-              <label class="block text-sm font-medium">${t.barracksLabel}</label>
+            <h2 class="text-xl font-semibold mb-4">${t.trainingTitle}</h2>
+            <div class="mb-4 p-4 border rounded-md">
+              <label class="block text-sm font-medium mb-2">${t.barracksLabel}</label>
               <input type="number" min="0" value="${state.barracks}" id="barracks" class="w-full p-2 border rounded-md">
             </div>
             <button id="nextTrainings" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.next}</button>
-            <button id="backTrainings" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+            <button id="backTrainings" class="mt-4 ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.back}</button>
           </div>
         `;
         document.getElementById('barracks').addEventListener('change', (e) => {
@@ -817,13 +913,13 @@
       } else if (state.currentStep === 'unitSpeeds') {
         app.innerHTML = `
           <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">${t.unitSpeedsTitle}</h2>
-            <div class="mb-4">
-              <label class="block text-sm font-medium">${t.boostLabel}</label>
+            <h2 class="text-xl font-semibold mb-4">${t.unitSpeedsTitle}</h2>
+            <div class="mb-4 p-4 border rounded-md">
+              <label class="block text-sm font-medium mb-2">${t.boostLabel}</label>
               <input type="text" value="${state.boost}" id="boost" class="w-full p-2 border rounded-md">
             </div>
-            <button id="previewResults" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.previewResults}</button>
-            <button id="backUnitSpeeds" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+            <button id="previewResults" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.previewResults}</button>
+            <button id="backUnitSpeeds" class="mt-4 ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.back}</button>
           </div>
         `;
         document.getElementById('boost').addEventListener('change', (e) => {
@@ -838,14 +934,14 @@
       } else if (state.currentStep === 'preview') {
         app.innerHTML = `
           <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">${t.previewTitle}</h2>
+            <h2 class="text-xl font-semibold mb-4">${t.previewTitle}</h2>
             <div class="max-h-[600px] overflow-y-auto p-4 bg-gray-50 border rounded">
-              ${state.results.map((result, index) => `
+              ${state.results.length > 0 ? state.results.map((result, index) => `
                 <pre class="text-sm font-normal whitespace-pre-wrap mb-4">${result}</pre>
-              `).join('')}
+              `).join('') : `<p class="text-red-500">${t.downloadError}</p>`}
             </div>
-            <button id="downloadResults" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.downloadResults}</button>
-            <button id="backPreview" class="mt-4 ml-2 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">${t.back}</button>
+            <button id="downloadResults" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">${t.downloadResults}</button>
+            <button id="backPreview" class="mt-4 ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">${t.back}</button>
           </div>
         `;
         document.getElementById('downloadResults').addEventListener('click', downloadResults);

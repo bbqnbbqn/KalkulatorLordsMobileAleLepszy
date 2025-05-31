@@ -608,9 +608,9 @@ function handleFileUploads(e) {
         const missingUnits = unitsData[unit] || 0;
         let baseTime;
         if (unit.endsWith('1')) baseTime = 15;
-        else if (unit.endsWith('2')) baseTime = 130;
-        else if (unit.endsWith('3')) baseTime = 260;
-        else if (unit.endsWith('4')) baseTime = 1204;
+        else if (unit.endsWith('2')) baseTime = 30;
+        else if (unit.endsWith('3')) baseTime = 60;
+        else if (unit.endsWith('4')) baseTime = 120;
 
         const unitName = TRANSLATIONS[state.language].units[unit] || unit;
         if (missingUnits === 0) {
@@ -693,8 +693,8 @@ function handleFileUploads(e) {
       const outputs = state.accounts.map(account => {
         const speedResult = calculateSpeeds(state.speeds[account.id] || {});
         const trainSpeedResult = calculateSpeeds(state.trainSpeeds[account.id] || {});
-        const gems_15h = Math.floor((state.gems[account.id] || 0) / 25);
-        const gems_24h = Math.floor((state.gems[account.id] || 0) / 40);
+        const gems_15h = Math.floor((state.gems[account.id] || 0) / 1000);
+        const gems_24h = Math.floor((state.gems[account.id] || 0) / 1500);
 
         const unitsData = Object.keys(UNIT_REQUIREMENTS_DEFAULT).reduce((acc, unit) => {
           const required = account.requirements[unit] || 0;
